@@ -1,0 +1,10 @@
+.conversor-input {
+  @include Input;
+  font-family: $quicksand;
+  justify-content: flex-end;
+  text-align: end;
+}
+
+.conversor-input-label {
+  text-transform: capitalize;
+}
