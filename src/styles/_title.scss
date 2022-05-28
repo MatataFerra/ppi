@@ -1,0 +1,20 @@
+.title-container {
+  background-image: url($bg-image);
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+
+  min-height: 50vh;
+}
+
+.title {
+  color: $color-primary;
+  font-family: $worksans;
+  font-size: 34px;
+  font-weight: 700;
+  grid-row: 2;
+  align-self: center;
+}
