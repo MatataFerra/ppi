@@ -5,10 +5,12 @@ function App() {
   const urlApi = import.meta.env.VITE_API_URL;
 
   return (
-    <div className='App'>
-      <Title title='Convert 1 Euro to Canadian Dollar - EUR to CA$' />
-      <Conversor />
-    </div>
+    <>
+      <main className='App'>
+        <Title title='Convert 1 Euro to Canadian Dollar - EUR to CA$' />
+        <Conversor />
+      </main>
+    </>
   );
 }
 
