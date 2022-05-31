@@ -7,7 +7,12 @@ export const getCurrencies = async () => {
 };
 
 export const getRates = async (base: string) => {
-  const res = await fetch(import.meta.env.VITE_API_URL + "/rates?=" + base);
+  const res = await fetch(import.meta.env.VITE_API_URL + "/rates?base=" + base);
   const data: IRate = await res.json();
+
+  if (!data) {
+    throw new Error("No data");
+  }
+
   return data;
 };

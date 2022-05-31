@@ -1,18 +1,28 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Input, SelectCurrency } from ".";
+import { getRates } from "../api";
 import { CurrencyContext } from "../context";
 import "../styles/app.scss";
 import { Skeletton } from "./ui";
 
 export const Conversor: FC = () => {
   const { currencies, rates, currency_2 } = useContext(CurrencyContext);
-
+  const [cotization, setCotization] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (rates.base) {
       setIsLoading(false);
     }
   }, [rates.base]);
+
+  useEffect(() => {
+    const differenceBetweenCurrencies = async () => {
+      const data = await getRates(currency_2.base);
+      setCotization(data.rates[rates.base].toFixed(4).toString());
+    };
+
+    differenceBetweenCurrencies();
+  }, [currency_2.base, rates.base]);
 
   return (
     <section className='conversor'>
@@ -27,14 +37,18 @@ export const Conversor: FC = () => {
             <Skeletton height='38' />
           ) : (
             <div>
-              <p className='conversor-font--1'>{`1 ${currencies[rates.base].name} =`}</p>
+              <p className='conversor-font--1'>{`1 ${currencies[rates.base]?.name} =`}</p>
             </div>
           )}
-          <p className='conversor-font--2'>1.3550 Canadian Dollar</p>
+          <p className='conversor-font--2'>{`${rates.rates[currency_2.base]?.toFixed(4)} ${
+            currencies[currency_2.base]?.name
+          }`}</p>
 
           <div>
-            <p className='conversor-font--3'>1 CA$ = 0.7379 EUR</p>
-            <p className='conversor-font--3'>1 EUR = 1.3550 CA$</p>
+            <p className='conversor-font--3'>{`1 ${currency_2.base} = ${cotization} ${rates.base}`}</p>
+            <p className='conversor-font--3'>{`1 ${rates.base} = ${rates.rates[currency_2.base]?.toFixed(4)} ${
+              currency_2.base
+            }`}</p>
           </div>
           <div className='conversor-warning'>
             <img src={`${import.meta.env.VITE_URL_ASSETS}/warning.svg`} alt='' />

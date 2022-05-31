@@ -1,23 +1,21 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
+import { CurrencyContext } from "../context";
 import "../styles/app.scss";
 
 interface Props {
   label: string;
 }
 
-const parseNum = (num: number) => {
-  return num.toFixed(2);
-};
-
 export const Input: FC<Props> = ({ label }) => {
-  const [value, setValue] = useState("");
+  const { amountChanged, amount } = useContext(CurrencyContext);
 
-  useEffect(() => {
-    setValue(parseNum(1));
-  }, []);
+  const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (value === "") {
+      return;
+    }
 
-  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    amountChanged(value);
   };
 
   return (
@@ -26,14 +24,14 @@ export const Input: FC<Props> = ({ label }) => {
         {label}
       </label>
       <input
-        value={value}
+        value={amount}
         step={0.01}
         name={`${label.toLowerCase()}`}
         min={0.01}
         type='number'
         className='conversor-input'
-        onClick={() => setValue("")}
-        onChange={handleAmountChange}
+        //onClick={() => setValue("")}
+        onChange={onAmountChange}
       />
     </div>
   );

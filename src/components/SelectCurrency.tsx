@@ -11,33 +11,36 @@ interface Props {
 }
 
 export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies, style, USD = false }) => {
-  const [apiCurrencies, setApiCurrencies] = useState<string[]>([]);
   const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(false);
-  const { firstCurrencySelected } = useContext(CurrencyContext);
+  const { firstCurrencySelected, secondCurrencySelected, currency_1, currency_2 } = useContext(CurrencyContext);
 
-  useEffect(() => {
-    const newCurrencies = Object.keys(currencies);
-    const defaultValue = newCurrencies[0];
-    const indexValue = newCurrencies.indexOf(newCurrencies[1]);
-    const USDStartValue = [...newCurrencies].slice(indexValue);
-    USDStartValue.splice(1, 0, defaultValue);
+  const index = useMemo(() => {
+    if (!currencies) return;
+    if (USD) {
+      return Object.keys(currencies).indexOf(currency_2.base);
+    }
+    return Object.keys(currencies).indexOf(currency_1.base);
+  }, [currencies, currency_1, currency_2]);
 
-    USD ? setApiCurrencies(USDStartValue) : setApiCurrencies(newCurrencies);
+  const currenciesMemo = useMemo(() => {
+    if (!currencies) return;
+    return Object.keys(currencies);
   }, [currencies]);
 
   const onSelectOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value, id } = event.target;
-
     if (id === "from") {
       return firstCurrencySelected({ base: value });
     }
+
+    return secondCurrencySelected({ base: value });
   };
 
   useEffect(() => {
-    if (apiCurrencies.length > 0) {
+    if (currenciesMemo) {
       setIsLoadingCurrencies(true);
     }
-  }, [apiCurrencies]);
+  }, [currenciesMemo]);
 
   return (
     <>
@@ -51,10 +54,9 @@ export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies
             id={`${label.toLowerCase()}`}
             className='selectcurrency'
             onChange={onSelectOption}
-            //value={apiCurrencies[0]}
-          >
+            value={currenciesMemo![index ?? 0]}>
             {isLoadingCurrencies &&
-              apiCurrencies.map((currency: string) => {
+              currenciesMemo?.map((currency: string) => {
                 return (
                   <option key={currency + Math.random()} value={currency}>
                     {currency}

@@ -1,5 +1,5 @@
 import { FC, useEffect, useReducer } from "react";
-import { Children, ICurrencies, ICurrency, ICurrencyRate, IRate } from "../../interfaces";
+import { Children, ICurrencies, ICurrencyRate, IRate } from "../../interfaces";
 import { CurrencyContext, currencyReducer } from ".";
 import { getCurrencies, getRates } from "../../api";
 
@@ -8,6 +8,7 @@ export interface CurrencyState {
   currency_1: ICurrencyRate;
   currency_2: ICurrencyRate;
   rates: IRate;
+  amount: string;
 }
 
 const Currency_INITIAL_STATE: CurrencyState = {
@@ -30,6 +31,8 @@ const Currency_INITIAL_STATE: CurrencyState = {
     base: "",
     rates: {},
   },
+
+  amount: "1.00",
 };
 
 export const CurrencyProvider: FC<Children> = ({ children }) => {
@@ -46,21 +49,28 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
 
   useEffect(() => {
     const getRateFromApi = async () => {
-      const data = await getRates(state.currency_1.base);
-      console.log({ data });
-
-      dispatch({ type: "[Currency] - Get Rates", payload: data });
+      try {
+        const data = await getRates(state.currency_1.base);
+        dispatch({ type: "[Currency] - Get Rates", payload: data });
+      } catch (error: any) {
+        console.log(error);
+        console.log("An error occurred while fetching rates");
+      }
     };
 
     getRateFromApi();
-  }, []);
+  }, [state.currency_1.base]);
 
   const firstCurrencySelected = (currency: ICurrencyRate) => {
     dispatch({ type: "[Currency] - Currency Selected - 1", payload: currency });
   };
 
   const secondCurrencySelected = (currency: ICurrencyRate) => {
-    dispatch({ type: "[Currency] - Currency Selected - 1", payload: currency });
+    dispatch({ type: "[Currency] - Currency Selected - 2", payload: currency });
+  };
+
+  const amountChanged = (amount: string) => {
+    dispatch({ type: "[Currency] - Amount Changed", payload: amount });
   };
 
   return (
@@ -69,6 +79,7 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
         ...state,
         firstCurrencySelected,
         secondCurrencySelected,
+        amountChanged,
       }}>
       {children}
     </CurrencyContext.Provider>
