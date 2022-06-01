@@ -84,7 +84,7 @@ export const SelectCurrency: FC<Props> = ({ label, switchIcon = false, currencie
           {switchIcon && (
             <img
               className='selectcurrency-icon'
-              src={`${import.meta.env.VITE_URL}/src/public/switch.svg`}
+              src={`/switch.svg`}
               width={50}
               height={50}
               alt='Switch Icon'

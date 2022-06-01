@@ -68,7 +68,7 @@ export const Conversor: FC = () => {
             </Skeletton>
           </div>
           <div className='conversor-warning'>
-            <img src={`${import.meta.env.VITE_URL}/src/public/warning.svg`} alt='' />
+            <img src={`/warning.svg`} alt='' />
             <p>We use the market rate. This is for informational purposes only.</p>
           </div>
         </div>
