@@ -10,7 +10,7 @@ You can run this app by local y you can use it by clicking in [here](https://mat
 
 - Run yarn install or npm install
 
-After you will download all the dependencies create an enviroment file. Only you need to create in the root file a file who named `.env`. In this file you will add the following variables `VITE_API_URL` and `VITE_URL_ASSETS`. You can see an example in the `.env.template` file.
+After you will download all the dependencies create an enviroment file. Only you need to create in the root file a file who named `.env`. In this file you will add the following variables `VITE_API_URL` and `VITE_URL`. You can see an example in the `.env.template` file.
 
 When you already setting up the app just run `yarn dev` or `npm run dev` and a local server run in your browser.
 
