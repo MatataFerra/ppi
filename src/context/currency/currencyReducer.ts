@@ -6,7 +6,9 @@ type CurrencyActionType =
   | { type: "[Currency] - Currency Selected - 1"; payload: ICurrencyRate }
   | { type: "[Currency] - Currency Selected - 2"; payload: ICurrencyRate }
   | { type: "[Currency] - Get Rates"; payload: IRate }
-  | { type: "[Currency] - Amount Changed"; payload: string };
+  | { type: "[Currency] - Get Rates Currency 2"; payload: IRate }
+  | { type: "[Currency] - Amount Changed"; payload: string }
+  | { type: "[Currency] - Currency is switching"; payload: boolean };
 
 export const currencyReducer = (state: CurrencyState, action: CurrencyActionType): CurrencyState => {
   switch (action.type) {
@@ -42,10 +44,24 @@ export const currencyReducer = (state: CurrencyState, action: CurrencyActionType
         },
       };
 
+    case "[Currency] - Get Rates Currency 2":
+      return {
+        ...state,
+        ratesCurrency_2: {
+          ...action.payload,
+        },
+      };
+
     case "[Currency] - Amount Changed":
       return {
         ...state,
         amount: action.payload,
+      };
+
+    case "[Currency] - Currency is switching":
+      return {
+        ...state,
+        isSwitching: action.payload,
       };
 
     default:

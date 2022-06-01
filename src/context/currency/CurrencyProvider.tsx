@@ -8,7 +8,9 @@ export interface CurrencyState {
   currency_1: ICurrencyRate;
   currency_2: ICurrencyRate;
   rates: IRate;
+  ratesCurrency_2: IRate;
   amount: string;
+  isSwitching: boolean;
 }
 
 const Currency_INITIAL_STATE: CurrencyState = {
@@ -32,7 +34,15 @@ const Currency_INITIAL_STATE: CurrencyState = {
     rates: {},
   },
 
+  ratesCurrency_2: {
+    date: "",
+    base: "",
+    rates: {},
+  },
+
   amount: "1.00",
+
+  isSwitching: false,
 };
 
 export const CurrencyProvider: FC<Children> = ({ children }) => {
@@ -50,8 +60,15 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
   useEffect(() => {
     const getRateFromApi = async () => {
       try {
-        const data = await getRates(state.currency_1.base);
-        dispatch({ type: "[Currency] - Get Rates", payload: data });
+        const [dataCurrency1, dataCurrency2] = await Promise.all([
+          getRates(state.currency_1.base),
+          getRates(state.currency_2.base),
+        ]);
+
+        if (dataCurrency1.rates[state.currency_1.base] && dataCurrency2.rates[state.currency_2.base]) {
+          dispatch({ type: "[Currency] - Get Rates", payload: dataCurrency1 });
+          dispatch({ type: "[Currency] - Get Rates Currency 2", payload: dataCurrency2 });
+        }
       } catch (error: any) {
         console.log(error);
         console.log("An error occurred while fetching rates");
@@ -59,7 +76,7 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
     };
 
     getRateFromApi();
-  }, [state.currency_1.base]);
+  }, [state.currency_1.base, state.currency_2.base]);
 
   const firstCurrencySelected = (currency: ICurrencyRate) => {
     dispatch({ type: "[Currency] - Currency Selected - 1", payload: currency });
@@ -73,6 +90,10 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
     dispatch({ type: "[Currency] - Amount Changed", payload: amount });
   };
 
+  const switchCurrencies = (value: boolean) => {
+    dispatch({ type: "[Currency] - Currency is switching", payload: value });
+  };
+
   return (
     <CurrencyContext.Provider
       value={{
@@ -80,6 +101,7 @@ export const CurrencyProvider: FC<Children> = ({ children }) => {
         firstCurrencySelected,
         secondCurrencySelected,
         amountChanged,
+        switchCurrencies,
       }}>
       {children}
     </CurrencyContext.Provider>

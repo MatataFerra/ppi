@@ -11,15 +11,15 @@ export const Input: FC<Props> = ({ label }) => {
 
   const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    if (value === "") {
-      return;
-    }
+    const regex = /^\d{0,9}(\.\d{1,3})?$/;
+
+    if (Number(value) >= 1000000 || !regex.test(value)) return;
 
     amountChanged(value);
   };
 
   return (
-    <div>
+    <>
       <label className='conversor-input-label' htmlFor={`${label.toLowerCase()}`}>
         {label}
       </label>
@@ -30,9 +30,8 @@ export const Input: FC<Props> = ({ label }) => {
         min={0.01}
         type='number'
         className='conversor-input'
-        //onClick={() => setValue("")}
         onChange={onAmountChange}
       />
-    </div>
+    </>
   );
 };

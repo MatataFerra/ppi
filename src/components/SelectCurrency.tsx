@@ -4,18 +4,20 @@ import { CurrencyContext } from "../context/currency/CurrencyContext";
 
 interface Props {
   label: CurrencyLabelType;
-  swithIcon?: boolean;
+  switchIcon?: boolean;
   currencies: ICurrencies;
   style?: CSSProperties;
   USD?: boolean;
 }
 
-export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies, style, USD = false }) => {
+export const SelectCurrency: FC<Props> = ({ label, switchIcon = false, currencies, style, USD = false }) => {
   const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(false);
-  const { firstCurrencySelected, secondCurrencySelected, currency_1, currency_2 } = useContext(CurrencyContext);
+  const { firstCurrencySelected, secondCurrencySelected, currency_1, currency_2, switchCurrencies, rates } =
+    useContext(CurrencyContext);
 
   const index = useMemo(() => {
     if (!currencies) return;
+    delete currencies.RUB;
     if (USD) {
       return Object.keys(currencies).indexOf(currency_2.base);
     }
@@ -29,6 +31,12 @@ export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies
 
   const onSelectOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value, id } = event.target;
+    switchCurrencies(false);
+
+    setTimeout(() => {
+      switchCurrencies(true);
+    }, 1000);
+
     if (id === "from") {
       return firstCurrencySelected({ base: value });
     }
@@ -41,6 +49,15 @@ export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies
       setIsLoadingCurrencies(true);
     }
   }, [currenciesMemo]);
+
+  const onSwitchCurrency = () => {
+    console.log("onSwitchCurrency");
+    switchCurrencies(false);
+    const { base } = currency_1;
+    const { base: base2 } = currency_2;
+    firstCurrencySelected({ base: base2 });
+    secondCurrencySelected({ base: base });
+  };
 
   return (
     <>
@@ -64,13 +81,14 @@ export const SelectCurrency: FC<Props> = ({ label, swithIcon = false, currencies
                 );
               })}
           </select>
-          {swithIcon && (
+          {switchIcon && (
             <img
               className='selectcurrency-icon'
               src={`${import.meta.env.VITE_URL_ASSETS}/switch.svg`}
               width={50}
               height={50}
               alt='Switch Icon'
+              onClick={onSwitchCurrency}
             />
           )}
         </div>
