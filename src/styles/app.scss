@@ -1,7 +1,6 @@
 @import "./references";
 
 .App {
-  text-align: center;
   position: relative;
   min-height: 100vh;
 
@@ -17,4 +16,5 @@
 }
 
 @import "./title";
-@import "./conversor";
+@import "./conversor/conversor";
+@import "./ui/skeletton";

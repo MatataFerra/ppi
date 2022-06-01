@@ -13,8 +13,14 @@
 .title {
   color: $color-primary;
   font-family: $worksans;
+  text-align: center;
   font-size: 34px;
   font-weight: 700;
-  grid-row: 2;
+  grid-row: 1 / span 2;
   align-self: center;
+
+  @media screen and (max-width: $break-md) {
+    font-size: 24px;
+    grid-row: 1;
+  }
 }

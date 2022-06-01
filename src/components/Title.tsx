@@ -7,8 +7,8 @@ interface Props {
 
 export const Title: FC<Props> = ({ title }) => {
   return (
-    <div className='title-container'>
+    <nav className='title-container'>
       <h1 className='title'>{title}</h1>
-    </div>
+    </nav>
   );
 };
