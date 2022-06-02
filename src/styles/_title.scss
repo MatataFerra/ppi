@@ -21,6 +21,6 @@
 
   @media screen and (max-width: $break-md) {
     font-size: 24px;
-    grid-row: 1;
+    grid-row: span 2;
   }
 }
