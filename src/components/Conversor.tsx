@@ -50,7 +50,7 @@ export const Conversor: FC = () => {
             <FromCurrencySelected amount={amount} name={currencies[rates.base]?.name} />
           </Skeletton>
 
-          <Skeletton height='42' width='300' isLoading={isSwitching}>
+          <Skeletton height='42' width='300' isLoading={isSwitching} classCustom='skeletton-tocurrency'>
             <ToCurrencySelected amount={memoAmount} name={currencies[currency_2.base]?.name} />
           </Skeletton>
 

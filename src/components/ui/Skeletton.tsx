@@ -9,15 +9,18 @@ interface Props extends Children {
   width?: string;
   /** Is Loading */
   isLoading?: boolean;
+  classCustom?: string;
 }
 
-export const Skeletton: FC<Props> = ({ height = "32", width = "100", children, isLoading = true }) => {
+export const Skeletton: FC<Props> = ({ height = "32", width = "100", children, isLoading = true, classCustom }) => {
   return (
     <>
       {isLoading ? (
         children
       ) : (
-        <div className='skeletton' style={{ width: `${width}px`, margin: "0.5rem 0", height: `${height}px` }}></div>
+        <div
+          className={`skeletton ${classCustom}`}
+          style={{ width: `${width}px`, margin: "0.5rem 0", height: `${height}px` }}></div>
       )}
     </>
   );
