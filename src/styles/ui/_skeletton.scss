@@ -22,5 +22,7 @@
 }
 
 .skeletton-tocurrency {
-  width: 100% !important;
+  @media screen and (max-width: $break-sm) {
+    width: 60% !important;
+  }
 }

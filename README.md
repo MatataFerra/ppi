@@ -2,7 +2,7 @@
 
 ## This app is made in ViTE, React and TypeScript
 
-You can run this app by local y you can use it by clicking in [here](https://chipper-naiad-a2d83e.netlify.app/)
+You can run this app by local y you can use it by clicking in [here](https://ppi-challenge.netlify.app)
 
 ### Use it in local
 
