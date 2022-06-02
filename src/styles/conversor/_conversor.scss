@@ -17,7 +17,7 @@
   z-index: 999;
 
   @media screen and (max-width: $break-md) {
-    height: 100%;
+    height: auto;
     padding: 13px;
     top: 25%;
     width: 90%;
